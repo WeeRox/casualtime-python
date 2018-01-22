@@ -5,7 +5,17 @@ def get_casualtime(dt):
     DAY = 24 * HOUR
     WEEK = 7 * DAY
     from datetime import datetime
-    now = datetime.now()
+    import pytz
+
+    now = datetime.utcnow()
+
+    # convert both datetimes to aware
+    if now.tzinfo is None:
+        now = pytz.utc.localize(now)
+
+    if dt.tzinfo is None:
+        dt = pytz.utc.localize(dt)
+
     seconds = int((now - dt).total_seconds())
 
     if seconds < 0:
